@@ -44,11 +44,14 @@ public class YARPPlayer {
         currentParkour = parkour;
         currentParkourCheckpoint = -1;
         currentParkourStart = null;
+        YARParkour plugin = (YARParkour) YARParkour.getProvidingPlugin(YARParkour.class);
+        plugin.getPlayerManager().removeTeam(player);
         if (parkour != null) {
-            YARPConfig config = ((YARParkour)YARParkour.getProvidingPlugin(YARParkour.class)).getConfiguration();
+            plugin.getPlayerManager().addTeam(player);
+            YARPConfig config = plugin.getConfiguration();
             giveItems(config);
             currentParkourStart = LocalDateTime.now();
-            if (config.teleportOnStart()) player.teleport(parkour.getStart());
+            if (config.teleportOnStart()) config.teleport(player, parkour.getStart());
         }
     }
 
